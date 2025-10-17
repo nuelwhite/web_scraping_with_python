@@ -116,7 +116,36 @@ bs = BeautifulSoup(html, 'html.parser')
 print(bs.find('img', {'src':'../img/gifts/img1.jpg'}).parent.previous_sibling.get_text())
 ```
 
-This code will print the price of the object represented by the image at the location ../img/gifts/img1.jpg. 
+This code will print the price of the object represented by the image at the location ../img/gifts/img1.jpg.
+
+
+### Regular Expressions with BeautifulSoup
+
+Most functions that take strings arguments take regualr expression too. Regex and BeautifulSoup go hand in hand when scraping the web. It can seem pretty straightforward to use find_all() to all images on a website, but modern webpages have image tags that are there for styling, they hold not real content, and find all will return all of them as results. 
+
+Assuming the website's layout also changes, but you do not want to depend on the location of the image or resource we are looking for. In this scenario you might want extract the data based on some specific elements scattered through the website. For example, a featured product image might appear in a special layout at the top of some pages, but not others. 
+
+The solution is to look for something identifying about the tag itself. For example:
+
+```python
+
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import re
+
+html = urlopen('http://www.pythonscraping.com/pages/page3.html')
+bs = BeautifulSoup(html, 'html.parser')
+
+images = bs.find_all('img', {'src':re.compile('\.\.\/img\/gifts/img.*\.jpg')})
+
+for image in images:
+    print(image['src'])
+```
+
+This prints only the relative image paths that start with 'img/gifts/imgx.jpg'
+
+A Regex can be passed as an argument in BeautifulSoup expression allowing you a great deal of flexibility in finding target elements. 
+
 
 
 
