@@ -83,11 +83,40 @@ To find only descendants, you can use the .children() attribute in BeautifulSoup
 
 This code prints the list of product rows in the giftList table, including the initial row of column labels. If you use *descendants()* instead, you will get all descendant tags.
 
+#### Dealing with siblings
+
+*next_siblings()* is a BeautifulSoup function that makes it makes it trivial to collect data from tables, especially those with title rows. 
+
+```python 
+    from urllib.request import urlopen
+    from bs4 import BeautifulSoup
+
+    html = urlopen('http://www.pythonscraping.com/pages/page3.html')
+    bs = BeautifulSoup(html, 'html.parser')
+
+    for child in bs.find('table',{'id':'giftList'}).tr.next_siblings:
+        print(child)
+```
+
+The output of this code prints all rows of products from the product table, except for the first title row. As the name suggests, next_siblings, so it calls only the next siblings. The firt row is not included because objects cannot be siblings with themselves.
 
 
+#### Dealing with Parents
 
+When scraping pages, you will likely discover that you need to find parents of tags less frequently than you need to find their children or siblings. Typically, when you look at HTML pages with the goal of crawling them, you start by looking at the top layer of tags, and then figure out how to drill your way down into the exact piece of data that you want. Occasionally, however, you can find yourself in odd situations that require BeautifulSoup’s parent-finding functions, .parent and .parents. For example:
 
+```python
 
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+
+html = urlopen('http://www.pythonscraping.com/pages/page3.html')
+bs = BeautifulSoup(html, 'html.parser')
+
+print(bs.find('img', {'src':'../img/gifts/img1.jpg'}).parent.previous_sibling.get_text())
+```
+
+This code will print the price of the object represented by the image at the location ../img/gifts/img1.jpg. 
 
 
 
