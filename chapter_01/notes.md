@@ -26,5 +26,14 @@ The BeautifulSoup library was named after a Lewis Carroll poem of the same name 
 - **Parsing HTML/XML**: It can take raw HTML or XML content and convert it into navigable tree of python objects.
 - **Handling Malformed Markup**: It is robust and can handle poorly structured HTML. 
 - **Navigation and Searching**: Provides methods for navigating the parse tree and searching for specific elements based on tags, attributes, CSS selectors etc using find() or findall(). 
-- **Data Extraction**: Once elements are located, data extraction is easy. 
+- **Data Extraction**: Once elements are located, data extraction is easy.
+
+#### Installing BeautifulSoup
+
+BeautifulSoup is not a standard python library, so we'd have to install it to be able to use it. Just like every other python packages, it is easy to install, whether on Linux, Mac or Windows.
+
+- On **Linux** systems, we can install it using ```sudo apt-get install python-bs4```
+- On **Mac** systems, we can install the *pip* package manager using the command ```sudo easy_install pip``` and then run ```pip install beautifulsoup4```.
+- On **Windows** systems, we can download the recent release on the website, unzip the downloaded file, navigate to the folder where the file was extracted, and run ```python setup.py install```. Or you can use the *pip* package manager by using the following command ```pip install beautifulsoup4```
+
 
