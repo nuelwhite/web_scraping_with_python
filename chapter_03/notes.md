@@ -38,4 +38,45 @@ for link in bs.find('div', {'id':'bodyContent'}).find_all('a', href=re.compile('
     if 'href' in link.attrs:
         print(link.attrs['href'])
 ```
-The result of this shows only relevant links to Kevin Bacon. 
+The result of this shows only relevant links to Kevin Bacon.
+
+### Crawling an Entire Site
+Building scrapers that scrape entire sites can be memory intensive, and it is best suited for websites for which a readily available database to store the crawled data. 
+You can use scrapers to traverse entire site for some reasons like:
+- Generate the sitemap
+- Gather specific data 
+
+The general approach to scrape an entire site is to start by checking the landing page (homepage) and then checking all other internal links available. Everyone of those links is then crossed, and additional links are found on each of them, which are further crawled. 
+
+Some internal links might be duplicated, so in order to avoid duplicates and avoid crawling the same twice or more, put constraints or checks in place to make sure if a site is crawled already, it should not be crawled again. Example
+
+```python
+
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import re
+
+pages = set()
+
+def getLinks(pageUrl):
+    global pages
+    
+    html = urlopen('http://en.wikipedia.org{}'.format(pageUrl))
+    bs = BeautifulSoup(html, 'html.parser')
+
+    for link in bs.find_all('a', href=re.compile('^(/wiki/)')):
+        if 'href' in link.attrs:
+            if link.attrs['href'] not in pages:
+            #We have encountered a new page
+            newPage = link.attrs['href']
+            print(newPage)
+            pages.add(newPage)
+            getLinks(newPage)
+
+getLinks('')
+```
+
+
+
+
+
