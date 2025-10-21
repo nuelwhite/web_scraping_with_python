@@ -18,3 +18,24 @@ for link in bs.findall('a'):
     if 'href' in link.attrs:
         print(link.attrs['href'])
 ```
+
+From the output we can see all links on the webpage, notably wikipedia pages have sidebars so all those links have been extracted, but we only need relevant links. Wikipedia pages with internal links have these in common:
+- They reside in a div container with id bodyContent
+- URLs do not contain colons
+- The URLs begin with /wiki/.
+
+Based on these, we can revise our code to filter the irrelevant links out
+
+```python
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import re
+
+html = urlopen('http://en.wikipedia.org/wiki/Kevin_Bacon')
+bs = BeautifulSoup(html, 'html.parser')
+
+for link in bs.find('div', {'id':'bodyContent'}).find_all('a', href=re.compile('^(/wiki/)((?!:).)*$')):
+    if 'href' in link.attrs:
+        print(link.attrs['href'])
+```
+The result of this shows only relevant links to Kevin Bacon. 
